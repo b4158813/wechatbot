@@ -10,8 +10,8 @@ import (
 )
 
 type MemoDaySt struct {
-	description string
-	ymd         time.Time
+	description string    // 日子描述
+	ymd         time.Time // 日期
 }
 
 func LineByLine(file string) ([]string, error) {

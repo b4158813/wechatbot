@@ -2,11 +2,11 @@ package utils
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 )
 
+// 打印功能菜单
 func GetFunctionsList() (string, error) {
 	var res string
 	res += "【欢迎使用wlx专属bot】\n"
@@ -17,6 +17,7 @@ func GetFunctionsList() (string, error) {
 	return res, nil
 }
 
+// 打印纪念日信息
 func GetMemoDataInfo() (string, error) {
 	memo_data := GetMemoData("memo_day.txt")
 	var res string
@@ -25,8 +26,8 @@ func GetMemoDataInfo() (string, error) {
 	for i := 0; i < 3; i++ {
 		desc := memo_data[i].description
 		ymd := strings.Split(memo_data[i].ymd.String(), " ")[0]
-		rest_day := strconv.Itoa(int(memo_data[i].ymd.Sub(now_time).Hours() / 24))
-		res += fmt.Sprintf("⭐%s\n%10s %5s天\n\n", desc, ymd, rest_day)
+		rest_day := int(memo_data[i].ymd.Sub(now_time).Hours() / 24)
+		res += fmt.Sprintf("⭐%s\n%10s %5d天\n\n", desc, ymd, rest_day)
 	}
 	return res, nil
 }

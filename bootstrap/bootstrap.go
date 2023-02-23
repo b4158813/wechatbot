@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"log"
 	"wechatbot/handlers"
+	"wechatbot/utils"
 
 	"github.com/eatmoreapple/openwechat"
 )
@@ -26,6 +27,9 @@ func Run() {
 			return
 		}
 	}
+
+	go utils.StartTimerTask(bot)
+
 	// 阻塞主goroutine, 直到发生异常或者用户主动退出
 	bot.Block()
 }
