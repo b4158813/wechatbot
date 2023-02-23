@@ -27,7 +27,7 @@ func NewUserMessageHandler() MessageHandlerInterface {
 	return &UserMessageHandler{}
 }
 
-// ReplyText 发送文本消息到群
+// ReplyText 发送文本消息给朋友
 func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 接收私聊消息
 	sender, _ := msg.Sender()
