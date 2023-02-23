@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/b4158813/wechatbot_wlx/gtp"
-	"github.com/eatmoreapple/openwechat"
 	"log"
 	"strings"
+	"wechatbot/gpt"
+
+	"github.com/eatmoreapple/openwechat"
 )
 
 var _ MessageHandlerInterface = (*GroupMessageHandler)(nil)
@@ -29,7 +30,7 @@ func NewGroupMessageHandler() MessageHandlerInterface {
 // ReplyText 发送文本消息到群
 func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 接收群消息
-	sender, err := msg.Sender()
+	sender, _ := msg.Sender()
 	group := openwechat.Group{sender}
 	log.Printf("Received Group %v Text Msg : %v", group.NickName, msg.Content)
 
@@ -39,11 +40,11 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	}
 
 	// 替换掉@文本，然后向GPT发起请求
-	replaceText := "@" + sender.Self.NickName
+	replaceText := "@" + sender.NickName
 	requestText := strings.TrimSpace(strings.ReplaceAll(msg.Content, replaceText, ""))
-	reply, err := gtp.Completions(requestText)
+	reply, err := gpt.Completions(requestText)
 	if err != nil {
-		log.Printf("gtp request error: %v \n", err)
+		log.Printf("gpt request error: %v \n", err)
 		msg.ReplyText("机器人神了，我一会发现了就去修。")
 		return err
 	}

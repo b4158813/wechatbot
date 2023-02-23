@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"github.com/b4158813/wechatbot_wlx/config"
-	"github.com/eatmoreapple/openwechat"
 	"log"
+	"wechatbot/config"
+
+	"github.com/eatmoreapple/openwechat"
 )
 
 // MessageHandlerInterface 消息处理接口
@@ -30,10 +31,18 @@ func init() {
 
 // Handler 全局处理入口
 func Handler(msg *openwechat.Message) {
+
 	log.Printf("hadler Received msg : %v", msg.Content)
+
 	// 处理群消息
 	if msg.IsSendByGroup() {
 		handlers[GroupHandler].handle(msg)
+		return
+	}
+
+	// 处理私聊消息
+	if msg.IsSendByFriend() {
+		handlers[UserHandler].handle(msg)
 		return
 	}
 
@@ -48,6 +57,4 @@ func Handler(msg *openwechat.Message) {
 		}
 	}
 
-	// 私聊
-	handlers[UserHandler].handle(msg)
 }
