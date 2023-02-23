@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 	"wechatbot/gpt"
+	"wechatbot/utils"
 
 	"github.com/eatmoreapple/openwechat"
 )
@@ -29,20 +30,34 @@ func NewUserMessageHandler() MessageHandlerInterface {
 
 // ReplyText 发送文本消息给朋友
 func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
+	var err error
+	var reply string
+
 	// 接收私聊消息
 	sender, _ := msg.Sender()
 	log.Printf("Received User %v Text Msg : %v", sender.NickName, msg.Content)
 
-	// 向GPT发起请求
 	requestText := strings.Trim(msg.Content, "\n")
-	reply, err := gpt.Completions(requestText)
-	if err != nil {
-		log.Printf("gpt request error: %v \n", err)
-		msg.ReplyText("机器人神了，我一会发现了就去修。")
-		return err
-	}
-	if reply == "" {
-		return nil
+
+	if "list" == requestText { // 获取功能列表
+		reply, _ = utils.GetFunctionsList()
+	} else if "memo" == requestText { // 获取纪念日信息
+		log.Printf(sender.UserName)
+		reply, _ = utils.GetMemoDataInfo()
+	} else { // chatgpt聊天功能
+		// 向GPT发起请求
+		reply, err = gpt.Completions(requestText)
+
+		if err != nil {
+			log.Printf("gpt request error: %v \n", err)
+			msg.ReplyText("机器人神了，我一会发现了就去修。")
+			return err
+		}
+
+		if reply == "" {
+			return nil
+		}
+
 	}
 
 	// 回复用户

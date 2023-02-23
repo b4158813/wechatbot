@@ -1,11 +1,32 @@
 package utils
 
-func get_functions_list() string {
+import (
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
+)
+
+func GetFunctionsList() (string, error) {
 	var res string
-	res += "【欢迎使用wlx专属微信聊天机器人】\n"
+	res += "【欢迎使用wlx专属bot】\n"
 	res += "目前所支持的功能有：\n\n"
-	res += "输入任何内容即可与chatgpt聊天（支持群聊@回复 + 私聊回复）\n"
-	res += "输入 list:：展示此菜单\n"
-	res += "输入 commemoration：显示纪念日信息\n"
-	return res
+	res += "- 输入任何内容即可与chatgpt聊天（支持群聊@回复 + 私聊回复）\n\n"
+	res += "- 输入 list：展示此菜单\n\n"
+	res += "- 输入 memo：显示纪念日信息\n\n"
+	return res, nil
+}
+
+func GetMemoDataInfo() (string, error) {
+	memo_data := GetMemoData("memo_day.txt")
+	var res string
+	now_time := time.Now()
+	res += "☆最近的3个纪念日☆\n"
+	for i := 0; i < 3; i++ {
+		desc := memo_data[i].description
+		ymd := strings.Split(memo_data[i].ymd.String(), " ")[0]
+		rest_day := strconv.Itoa(int(memo_data[i].ymd.Sub(now_time).Hours() / 24))
+		res += fmt.Sprintf("%-15s → %-12s %5s天\n\n", desc, ymd, rest_day)
+	}
+	return res, nil
 }

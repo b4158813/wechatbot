@@ -17,7 +17,7 @@ func Run() {
 	bot.UUIDCallback = openwechat.PrintlnQrcodeUrl
 
 	// 创建热存储容器对象
-	reloadStorage := openwechat.NewJsonFileHotReloadStorage("storage.json")
+	reloadStorage := openwechat.NewFileHotReloadStorage("storage.json")
 	// 执行热登录
 	err := bot.HotLogin(reloadStorage)
 	if err != nil {

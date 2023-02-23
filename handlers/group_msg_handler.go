@@ -4,6 +4,7 @@ import (
 	"log"
 	"strings"
 	"wechatbot/gpt"
+	"wechatbot/utils"
 
 	"github.com/eatmoreapple/openwechat"
 )
@@ -29,6 +30,9 @@ func NewGroupMessageHandler() MessageHandlerInterface {
 
 // ReplyText 发送文本消息到群
 func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
+	var err error
+	var reply string
+
 	// 接收群消息
 	sender, _ := msg.Sender()
 	group := openwechat.Group{sender}
@@ -50,17 +54,11 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		return err
 	}
 
-	// if regexp.MustCompile("[ ,，。.]").Split(requestText, -1)[0] == "list" {
-
-	// }
-
-	var reply string
-
-	if "list" == requestText {
-		reply = utils.get_functions_list()
-	} else if "commemoration" == requestText {
-
-	} else {
+	if "list" == requestText { // 获取功能列表
+		reply, _ = utils.GetFunctionsList()
+	} else if "commemoration" == requestText { // 获取纪念日信息
+		reply, _ = utils.GetMemoDataInfo()
+	} else { // chatgpt聊天功能
 		// 向GPT发起请求
 		reply, err = gpt.Completions(requestText)
 
