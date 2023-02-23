@@ -54,9 +54,9 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		return err
 	}
 
-	if "list" == requestText { // 获取功能列表
+	if strings.Count(requestText, "list") > 0 { // 获取功能列表
 		reply, _ = utils.GetFunctionsList()
-	} else if "commemoration" == requestText { // 获取纪念日信息
+	} else if strings.Count(requestText, "memo") > 0 { // 获取纪念日信息
 		reply, _ = utils.GetMemoDataInfo()
 	} else { // chatgpt聊天功能
 		// 向GPT发起请求

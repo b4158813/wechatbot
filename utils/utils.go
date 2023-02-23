@@ -21,12 +21,12 @@ func GetMemoDataInfo() (string, error) {
 	memo_data := GetMemoData("memo_day.txt")
 	var res string
 	now_time := time.Now()
-	res += "☆最近的3个纪念日☆\n"
+	res += "☆最近的3个纪念日☆\n\n"
 	for i := 0; i < 3; i++ {
 		desc := memo_data[i].description
 		ymd := strings.Split(memo_data[i].ymd.String(), " ")[0]
 		rest_day := strconv.Itoa(int(memo_data[i].ymd.Sub(now_time).Hours() / 24))
-		res += fmt.Sprintf("%-15s → %-12s %5s天\n\n", desc, ymd, rest_day)
+		res += fmt.Sprintf("⭐%s\n%10s %5s天\n\n", desc, ymd, rest_day)
 	}
 	return res, nil
 }
