@@ -11,6 +11,8 @@ import (
 
 func StartTimerTask(bot *openwechat.Bot) {
 	ticker := time.NewTicker(time.Duration(24) * time.Hour)
+	defer ticker.Stop()
+
 	for {
 		select {
 		case <-ticker.C:
