@@ -16,7 +16,7 @@ TODO:
  + 设置daemon模式
  + 后台日志输出到文件中
  + 将群聊名称等信息加入到config环境变量中
- + 部署到云服务器上
+ + 部署到云服务器上 (done)
 
 # 注册openai
 chatGPT注册可以参考[这里](https://juejin.cn/post/7173447848292253704)
