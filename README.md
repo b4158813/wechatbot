@@ -1,5 +1,5 @@
 # wechatbot_wlx
-本项目魔改自[djun/wechatbot_wlx](https://github.com/djun/wechatbot_wlx)
+本项目魔改自[djun/wechatbot_wlx](https://github.com/djun/wechatbot)
 
 项目基于 [openwechat](https://github.com/eatmoreapple/openwechat) 开发，目前实现了以下功能：
  + chatgpt-api的 群聊@回复
@@ -31,7 +31,6 @@ cd wechatbot
 
 # 复制配置文件
 copy config.dev.json config.json
-
 # 启动项目
 go run main.go
 
