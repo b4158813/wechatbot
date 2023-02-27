@@ -1,1 +1,1 @@
-go build -o wechatbot main.go && nohup ./wechatbot > wechatbot.log 2>&1 &
+go build -o wechatbot main.go && nohup ./wechatbot -c config.json > wechatbot.log 2>&1 &

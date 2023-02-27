@@ -1,8 +1,8 @@
 config.json
+config_test.json
 storage.json
 test.go
 memo_day.txt
 wechatbot
 wechatbot.log
-main
-main.log
+run_test.sh

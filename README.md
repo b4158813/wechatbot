@@ -17,7 +17,7 @@ TODO:
  + 设置daemon模式 (done)
  + 优化定时器定时上报方式，每天固定时间点 (done)
  + 后台日志输出到文件中 (done)
- + 将群聊名称等信息加入到config环境变量中
+ + 将群聊名称等信息加入到config环境变量中 (done)
 
 # 注册openai
 chatGPT注册可以参考[这里](https://juejin.cn/post/7173447848292253704)
@@ -32,9 +32,11 @@ cd wechatbot
 
 # 复制配置文件
 copy config.dev.json config.json
-# 启动项目
-go run main.go
+
+# 启动项目 (daemon模式)
+./run.sh
 
 启动前需替换config中的api_key
+有额外信息请自行更改extra
 
 ````

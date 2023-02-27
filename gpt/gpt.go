@@ -61,7 +61,7 @@ func Completions(msg string) (string, error) {
 		return "", err
 	}
 
-	apiKey := config.LoadConfig().ApiKey
+	apiKey := config.Config.ApiKey
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+apiKey)
 	client := &http.Client{}

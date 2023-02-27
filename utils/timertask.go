@@ -5,6 +5,7 @@ import (
 	"log"
 	"strings"
 	"time"
+	"wechatbot/config"
 
 	"github.com/eatmoreapple/openwechat"
 	"github.com/robfig/cron/v3"
@@ -30,9 +31,9 @@ func MemoReminderTask() {
 	self, _ := bot.GetCurrentUser()
 	groups, _ := self.Groups()
 	// group := groups.GetByNickName("bot测试")
-	group := groups.GetByNickName("🥰")
+	group := groups.GetByNickName(config.Config.Extra.GroupName)
 
-	memo_data := GetMemoData("memo_day.txt")
+	memo_data := GetMemoData(config.Config.Extra.MemoDayFile)
 	now_time := time.Now()
 	desc := memo_data[0].description
 	ymd := strings.Split(memo_data[0].ymd.String(), " ")[0]
@@ -53,7 +54,7 @@ func QQReminderTask() {
 	self, _ := bot.GetCurrentUser()
 	groups, _ := self.Groups()
 	// group := groups.GetByNickName("bot测试")
-	group := groups.GetByNickName("🥰")
+	group := groups.GetByNickName(config.Config.Extra.GroupName)
 	_, err := group.SendText("⏰ 记得QQ互发消息哦~")
 	if err != nil {
 		log.Printf("QQReminderTask group.SendText error")

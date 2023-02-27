@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"wechatbot/config"
 )
 
 // 打印功能菜单
@@ -19,7 +20,7 @@ func GetFunctionsList() (string, error) {
 
 // 打印纪念日信息
 func GetMemoDataInfo() (string, error) {
-	memo_data := GetMemoData("memo_day.txt")
+	memo_data := GetMemoData(config.Config.Extra.MemoDayFile)
 	var res string
 	now_time := time.Now()
 	res += "☆最近的3个纪念日☆\n\n"

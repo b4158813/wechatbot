@@ -1,4 +1,8 @@
 {
   "api_key": "your api key",
-  "auto_pass": true
+  "auto_pass": true,
+
+  "extra": {
+    
+  }
 }
