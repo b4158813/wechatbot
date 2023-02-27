@@ -7,22 +7,25 @@ import (
 	"time"
 
 	"github.com/eatmoreapple/openwechat"
+	"github.com/robfig/cron/v3"
 )
 
-func StartTimerTask(bot *openwechat.Bot) {
-	ticker := time.NewTicker(time.Duration(24) * time.Hour)
-	defer ticker.Stop()
+var bot *openwechat.Bot
 
-	for {
-		select {
-		case <-ticker.C:
-			go MemoReminderTask(bot)
-			go QQReminderTask(bot)
-		}
-	}
+func StartTimerTask(bot_param *openwechat.Bot) {
+
+	bot = bot_param
+
+	c := cron.New(cron.WithSeconds())
+	c.Start()
+	// second minute hour day month week
+	c.AddFunc("0 0 19 * * ?", QQReminderTask)   // qq互发消息提醒
+	c.AddFunc("0 0 19 * * ?", MemoReminderTask) // 纪念日提醒
+
+	select {}
 }
 
-func MemoReminderTask(bot *openwechat.Bot) error {
+func MemoReminderTask() {
 
 	self, _ := bot.GetCurrentUser()
 	groups, _ := self.Groups()
@@ -38,14 +41,14 @@ func MemoReminderTask(bot *openwechat.Bot) error {
 		s := fmt.Sprintf("⏰叮~下面这个纪念日快到啦\n\n⭐%s\n%10s %5d天\n", desc, ymd, rest_day)
 		_, err := group.SendText(s)
 		if err != nil {
-			log.Printf("group.SendText()")
-			return err
+			log.Printf("MemoReminderTask group.SendText error")
+			return
 		}
+		log.Printf("MemoReminderTask send ok.")
 	}
-	return nil
 }
 
-func QQReminderTask(bot *openwechat.Bot) error {
+func QQReminderTask() {
 
 	self, _ := bot.GetCurrentUser()
 	groups, _ := self.Groups()
@@ -53,8 +56,8 @@ func QQReminderTask(bot *openwechat.Bot) error {
 	group := groups.GetByNickName("🥰")
 	_, err := group.SendText("⏰ 记得QQ互发消息哦~")
 	if err != nil {
-		log.Printf("group.SendText()")
-		return err
+		log.Printf("QQReminderTask group.SendText error")
+		return
 	}
-	return nil
+	log.Printf("QQReminderTask send ok.")
 }

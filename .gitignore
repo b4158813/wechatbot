@@ -2,3 +2,7 @@ config.json
 storage.json
 test.go
 memo_day.txt
+wechatbot
+wechatbot.log
+main
+main.log
