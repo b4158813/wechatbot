@@ -12,13 +12,6 @@ npy专属功能：
  + 每日提醒 qq互发消息
  + 离最近的纪念日仅剩7/3/1天时向专属群聊发送提醒消息
 
-TODO:
- + 部署到云服务器上 (done)
- + 设置daemon模式 (done)
- + 优化定时器定时上报方式，每天固定时间点 (done)
- + 后台日志输出到文件中 (done)
- + 将群聊名称等信息加入到config环境变量中 (done)
-
 # 注册openai
 chatGPT注册可以参考[这里](https://juejin.cn/post/7173447848292253704)
 
@@ -33,10 +26,13 @@ cd wechatbot
 # 复制配置文件
 copy config.dev.json config.json
 
-# 启动项目 (daemon模式)
+# 启动项目 (前台模式)
+go run main.go
+
+# 启动项目 (daemon模式，日志打印到./wechatbot.log)
 ./run.sh
 
 启动前需替换config中的api_key
-有额外信息请自行更改extra
+有额外信息请自行更改extra结构体、config文件以及对应代码
 
 ````

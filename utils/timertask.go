@@ -19,9 +19,9 @@ func StartTimerTask(bot_param *openwechat.Bot) {
 
 	c := cron.New(cron.WithSeconds())
 	c.Start()
-	// second minute hour day month week
-	c.AddFunc("0 0 19 * * ?", QQReminderTask)   // qq互发消息提醒
-	c.AddFunc("0 0 19 * * ?", MemoReminderTask) // 纪念日提醒
+	// 秒 分 时 日 月 周几
+	c.AddFunc("0 10 18 * * ?", QQReminderTask)   // qq互发消息提醒
+	c.AddFunc("0 10 18 * * ?", MemoReminderTask) // 纪念日提醒
 
 	select {}
 }
@@ -30,7 +30,6 @@ func MemoReminderTask() {
 
 	self, _ := bot.GetCurrentUser()
 	groups, _ := self.Groups()
-	// group := groups.GetByNickName("bot测试")
 	group := groups.GetByNickName(config.Config.Extra.GroupName)
 
 	memo_data := GetMemoData(config.Config.Extra.MemoDayFile)
@@ -53,7 +52,6 @@ func QQReminderTask() {
 
 	self, _ := bot.GetCurrentUser()
 	groups, _ := self.Groups()
-	// group := groups.GetByNickName("bot测试")
 	group := groups.GetByNickName(config.Config.Extra.GroupName)
 	_, err := group.SendText("⏰ 记得QQ互发消息哦~")
 	if err != nil {
