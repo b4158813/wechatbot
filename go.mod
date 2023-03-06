@@ -4,4 +4,7 @@ go 1.20
 
 require github.com/eatmoreapple/openwechat v1.4.1
 
-require github.com/robfig/cron/v3 v3.0.0
+require (
+	github.com/robfig/cron/v3 v3.0.0
+	golang.org/x/text v0.8.0
+)

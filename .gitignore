@@ -7,3 +7,4 @@ wechatbot
 wechatbot.log
 run_test.sh
 gen_memorial.py
+get_gpt_reply.py

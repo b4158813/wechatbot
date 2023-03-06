@@ -6,11 +6,16 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os/exec"
+	"strings"
 	"wechatbot/config"
+
+	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
-// const BASEURL = "https://api.openai.com/v1/chat/"
-const BASEURL = "https://api.openai.com/v1/"
+const BASEURL = "https://api.openai.com/v1/chat/"
+
+// const BASEURL = "https://api.openai.com/v1/"
 
 // ChatGPTResponseBody 响应体
 type ChatGPTResponseBody struct {
@@ -27,9 +32,9 @@ type ChoiceItem struct {
 
 // ChatGPTRequestBody 请求体
 type ChatGPTRequestBody struct {
-	Model string `json:"model"`
-	// Messages         []ChatGPTChatFormat `json:"messages"`
-	Prompt           string  `json:"prompt"`
+	Model    string              `json:"model"`
+	Messages []ChatGPTChatFormat `json:"messages"`
+	// Prompt           string  `json:"prompt"`
 	MaxTokens        int     `json:"max_tokens"`
 	Temperature      float32 `json:"temperature"`
 	TopP             int     `json:"top_p"`
@@ -51,19 +56,20 @@ type ChatGPTChatFormat struct {
 //   "messages": [{"role": "user", "content": "Hello!"}]
 // }'
 
+// 老版本，但是openai开了全局代理之后无法正常使用
 func Completions(msg string) (string, error) {
 
-	// chatformat := make([]ChatGPTChatFormat, 0)
-	// chatformat = append(chatformat, ChatGPTChatFormat{
-	// 	Role:    "user",
-	// 	Content: msg,
-	// })
+	chatformat := make([]ChatGPTChatFormat, 0)
+	chatformat = append(chatformat, ChatGPTChatFormat{
+		Role:    "user",
+		Content: msg,
+	})
 
 	requestBody := ChatGPTRequestBody{
-		Model:  "text-davinci-003",
-		Prompt: msg,
-		// Model: "gpt-3.5-turbo-0301",
-		// Messages:         chatformat,
+		// Model:  "text-davinci-003",
+		// Prompt: msg,
+		Model:            "gpt-3.5-turbo",
+		Messages:         chatformat,
 		MaxTokens:        2048,
 		Temperature:      0.7,
 		TopP:             1,
@@ -111,4 +117,20 @@ func Completions(msg string) (string, error) {
 	}
 	log.Printf("gpt response text: %s \n", reply)
 	return reply, nil
+}
+
+// 船新版本，使用go的exec库调用python的openai库就可以跑
+func CompletionsNew(msg string) (string, error) {
+
+	reply, err := exec.Command("python", "get_gpt_reply.py", "-apikey", config.Config.ApiKey, "-msg", msg).Output()
+	if err != nil {
+		return "exec.Command", err
+	}
+	reply, err = simplifiedchinese.GBK.NewDecoder().Bytes(reply)
+	if err != nil {
+		return "simplifiedchinese.GBK.NewDecoder()", err
+	}
+	result := strings.TrimSpace(string(reply))
+	log.Printf("gpt response text: %s \n", result)
+	return result, err
 }

@@ -46,10 +46,10 @@ func (g *UserMessageHandler) ReplyText(msg *openwechat.Message) error {
 		reply, _ = utils.GetMemoDataInfo()
 	} else { // chatgpt聊天功能
 		// 向GPT发起请求
-		reply, err = gpt.Completions(requestText)
+		reply, err = gpt.CompletionsNew(requestText)
 
 		if err != nil {
-			log.Printf("gpt request error: %v \n", err)
+			log.Printf("gpt.CompletionsNew error: %v \n", err)
 			msg.ReplyText("机器人神了，我一会发现了就去修。")
 			return err
 		}
