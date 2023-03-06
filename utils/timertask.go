@@ -45,6 +45,8 @@ func MemoReminderTask() {
 			return
 		}
 		log.Printf("MemoReminderTask send ok.")
+	} else {
+		log.Printf("MemoReminderTask start ok, but no information sent.")
 	}
 }
 
