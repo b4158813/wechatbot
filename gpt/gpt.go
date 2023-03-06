@@ -122,6 +122,7 @@ func Completions(msg string) (string, error) {
 // 船新版本，使用go的exec库调用python的openai库就可以跑
 func CompletionsNew(msg string) (string, error) {
 
+	log.Printf("start command to call python script")
 	reply, err := exec.Command("python", "get_gpt_reply.py", "-apikey", config.Config.ApiKey, "-msg", msg).Output()
 	if err != nil {
 		return "exec.Command", err
