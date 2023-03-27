@@ -12,7 +12,9 @@ func GetFunctionsList() (string, error) {
 	var res string
 	res += "【欢迎使用wlx专属bot】\n"
 	res += "目前所支持的功能有：\n\n"
-	res += "- 输入任何内容即可与chatgpt聊天（支持群聊@回复 + 私聊回复）\n\n"
+	if config.Config.GptChat {
+		res += "- 输入任何内容即可与chatgpt聊天（支持群聊@回复 + 私聊回复）\n\n"
+	}
 	res += "- 输入 list：展示此菜单\n\n"
 	res += "- 输入 memo：显示纪念日信息\n\n"
 	return res, nil

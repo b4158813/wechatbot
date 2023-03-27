@@ -3,8 +3,6 @@ package handlers
 import (
 	"log"
 	"strings"
-	"wechatbot/gpt"
-	"wechatbot/utils"
 
 	"github.com/eatmoreapple/openwechat"
 )
@@ -54,24 +52,11 @@ func (g *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		return err
 	}
 
-	if strings.Count(requestText, "list") > 0 { // 获取功能列表
-		reply, _ = utils.GetFunctionsList()
-	} else if strings.Count(requestText, "memo") > 0 { // 获取纪念日信息
-		reply, _ = utils.GetMemoDataInfo()
-	} else { // chatgpt聊天功能
-		// 向GPT发起请求
-		reply, err = gpt.Completions(requestText)
-
-		if err != nil {
-			log.Printf("gpt request error: %v \n", err)
-			msg.ReplyText("机器人神了，我一会发现了就去修。")
-			return err
-		}
-
-		if reply == "" {
-			return nil
-		}
-
+	reply, err = HandleRequestText(requestText)
+	if err != nil {
+		log.Printf("gpt request error: %v \n", err)
+		msg.ReplyText("机器人神了，我一会发现了就去修。")
+		return err
 	}
 
 	// 回复@我的用户

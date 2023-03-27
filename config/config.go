@@ -17,8 +17,10 @@ type ExtraSt struct {
 type Configuration struct {
 	// gpt apikey
 	ApiKey string `json:"api_key"`
-	// 自动通过好友
+	// 是否自动通过好友
 	AutoPass bool `json:"auto_pass"`
+	// 是否开启gpt聊天功能
+	GptChat bool `json:"gpt_chat"`
 	// 额外信息
 	Extra ExtraSt `json:"extra"`
 }
